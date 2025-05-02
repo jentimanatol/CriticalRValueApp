@@ -5,6 +5,9 @@ import matplotlib.pyplot as plt
 from scipy.stats import t
 import numpy as np
 
+# -------------------------
+# Core Calculation Function
+# -------------------------
 def calculate_r_critical(alpha, n):
     df = n - 2
     if df <= 0:
@@ -13,6 +16,9 @@ def calculate_r_critical(alpha, n):
     r_crit = t_crit / np.sqrt(t_crit**2 + df)
     return r_crit, t_crit, df
 
+# -------------------------------
+# Event: Calculate and Plot Graph
+# -------------------------------
 def calculate_and_plot():
     try:
         alpha = float(entry_alpha.get())
@@ -21,6 +27,7 @@ def calculate_and_plot():
 
         result_label.config(text=f"Critical r-value (±): {r_critical:.3f}")
 
+        # Clear and redraw plot
         ax.clear()
         n_vals = np.arange(3, 101)
         r_vals = [calculate_r_critical(alpha, i)[0] for i in n_vals]
@@ -34,69 +41,92 @@ def calculate_and_plot():
         ax.legend()
         canvas.draw()
 
-        calc_summary.config(text=f"""n = {n}
-df = {df}
-α = {alpha}
-t_critical = {t_critical:.4f}
-r_critical = ± {r_critical:.4f}""")
+        # Update calculation summary
+        calc_summary.config(text=(
+            f"n = {n}\n"
+            f"df = {df}\n"
+            f"α = {alpha}\n"
+            f"t_critical = {t_critical:.4f}\n"
+            f"r_critical = ± {r_critical:.4f}"
+        ))
 
     except Exception as e:
         messagebox.showerror("Error", str(e))
 
+# ----------------------------
+# Event: Save Plot as PNG File
+# ----------------------------
 def save_plot():
-    file_path = filedialog.asksaveasfilename(defaultextension=".png",
-                                             filetypes=[("PNG files", "*.png"), ("All files", "*.*")])
+    file_path = filedialog.asksaveasfilename(
+        defaultextension=".png",
+        filetypes=[("PNG files", "*.png"), ("All files", "*.*")]
+    )
     if file_path:
         fig.savefig(file_path)
         messagebox.showinfo("Saved", f"Plot saved to:\n{file_path}")
 
+# --------------------
+# GUI Setup and Layout
+# --------------------
 root = tk.Tk()
 root.title("Critical r-value Calculator and Visualizer AJ")
 root.geometry("1280x750")
+root.iconbitmap("app_icon.ico")  # Optional: Ensure the icon file exists
 
-try:
-    root.iconbitmap("app_icon.ico")
-except Exception:
-    pass  # Ignore missing icon
-
+# ------------------
+# Top Input Controls
+# ------------------
 top_frame = tk.Frame(root, bg="#e6f0ff", padx=10, pady=5)
 top_frame.pack(fill=tk.X)
 
-tk.Label(top_frame, text="Significance Level (α):", bg="#e6f0ff").pack(side=tk.LEFT)
-entry_alpha = tk.Entry(top_frame, width=6)
+tk.Label(top_frame, text="Significance Level (α):", bg="#e6f0ff", font=("Arial", 11)).pack(side=tk.LEFT)
+entry_alpha = tk.Entry(top_frame, width=6, font=("Arial", 11))
 entry_alpha.insert(0, "0.05")
 entry_alpha.pack(side=tk.LEFT, padx=(0, 15))
 
-tk.Label(top_frame, text="Sample Size (n):", bg="#e6f0ff").pack(side=tk.LEFT)
-entry_n = tk.Entry(top_frame, width=6)
+tk.Label(top_frame, text="Sample Size (n):", bg="#e6f0ff", font=("Arial", 11)).pack(side=tk.LEFT)
+entry_n = tk.Entry(top_frame, width=6, font=("Arial", 11))
 entry_n.insert(0, "14")
 entry_n.pack(side=tk.LEFT, padx=(0, 15))
 
-tk.Button(top_frame, text="Calculate & Plot", command=calculate_and_plot, bg="#007acc", fg="white").pack(side=tk.LEFT, padx=5)
-tk.Button(top_frame, text="💾 Save Plot", command=save_plot, bg="#28a745", fg="white").pack(side=tk.LEFT, padx=5)
+tk.Button(top_frame, text="Calculate & Plot", command=calculate_and_plot, bg="#007acc", fg="white", font=("Arial", 11)).pack(side=tk.LEFT, padx=5)
+tk.Button(top_frame, text="💾 Save Plot", command=save_plot, bg="#28a745", fg="white", font=("Arial", 11)).pack(side=tk.LEFT, padx=5)
 
-result_label = tk.Label(root, text="Critical r-value (±): ", font=("Arial", 12, "bold"))
+# ---------------------
+# Display r-value Label
+# ---------------------
+result_label = tk.Label(root, text="Critical r-value (±): ", font=("Arial", 14, "bold"))
 result_label.pack(pady=5)
 
+# -------------------
+# Main Content Layout
+# -------------------
 main_frame = tk.Frame(root)
 main_frame.pack(fill=tk.BOTH, expand=True)
 
+# Left panel for plot
 left_panel = tk.Frame(main_frame)
 left_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
+# Plotting canvas using matplotlib
 fig, ax = plt.subplots(figsize=(7, 5))
 canvas = FigureCanvasTkAgg(fig, master=left_panel)
 canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
-right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=350, padx=10)
+# ---------------------------
+# Right panel for information
+# ---------------------------
+right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=370, padx=10)
 right_panel.pack(side=tk.RIGHT, fill=tk.Y)
 right_panel.pack_propagate(0)
 
-tk.Label(right_panel, text="🧮 Calculation Summary", font=("Helvetica", 11, "bold"), bg="#f0f6ff", fg="#003366").pack(pady=(5, 2))
-calc_summary = tk.Label(right_panel, text="", bg="#f0f6ff", justify="left", font=("Courier", 10))
+# Summary title and content
+tk.Label(right_panel, text="🧮 Calculation Summary", font=("Helvetica", 13, "bold"), bg="#f0f6ff", fg="#003366").pack(pady=(5, 2))
+calc_summary = tk.Label(right_panel, text="", bg="#f0f6ff", justify="left", font=("Courier", 12))
 calc_summary.pack(pady=(0, 10), padx=5, anchor="w")
 
-tk.Label(right_panel, text="📘 About This App", font=("Helvetica", 11, "bold"), bg="#f0f6ff", fg="#003366").pack(pady=(5, 2))
+# About the app section
+tk.Label(right_panel, text="📘 About This App", font=("Helvetica", 13, "bold"), bg="#f0f6ff", fg="#003366").pack(pady=(5, 2))
 
 formula_block = tk.Label(
     right_panel,
@@ -108,11 +138,12 @@ formula_block = tk.Label(
     ),
     bg="#f0f6ff",
     justify="left",
-    font=("Courier", 9),
+    font=("Courier", 11),
     fg="#2c3e50"
 )
 formula_block.pack(pady=(0, 8), padx=5, anchor="w")
 
+# Explanation legend
 legend = tk.Label(
     right_panel,
     text=(
@@ -128,10 +159,13 @@ legend = tk.Label(
     ),
     bg="#f0f6ff",
     justify="left",
-    font=("Helvetica", 9),
+    font=("Helvetica", 11),
     wraplength=300,
     anchor="w"
 )
 legend.pack(pady=(0, 10), padx=5, fill=tk.BOTH)
 
+# ----------
+# Main loop
+# ----------
 root.mainloop()
