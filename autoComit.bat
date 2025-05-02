@@ -1,9 +1,9 @@
 git --version
 git add .
-git commit -m "Autocomit"
+git commit -m "Increaset font size"
 git push origin main
 
 :: === Tagging for GitHub Actions Release Build ===
-git tag v2.5.1
-git push origin v2.5.1
+git tag v2.6
+git push origin v2.6
 pause
