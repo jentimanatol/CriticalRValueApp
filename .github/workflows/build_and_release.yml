@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build and Release EXE
 
 on:
   push:
@@ -18,13 +18,15 @@ jobs:
 
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller pyautogui
           pip install pyinstaller matplotlib scipy
 
-      - name: Build EXE
+      - name: Build executable with PyInstaller
         run: |
-          pyinstaller --noconfirm --onefile --windowed --icon=app_icon.ico --name critical_r_value_app critical_r_value_app.py
+          pyinstaller --noconfirm --onefile --windowed --icon=app_icon.ico --name critical_r_value_app critical_r_value_app.py  --hidden-import=pyautogui 
 
-      - name: Upload Release Asset
+      - name: Upload Release 
         uses: softprops/action-gh-release@v1
         with:
           files: dist/critical_r_value_app.exe
