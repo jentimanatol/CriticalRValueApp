@@ -56,7 +56,7 @@ def exit_app():
 
 root = tk.Tk()
 root.title("Critical r-value Calculator and Visualizer AJ")
-root.geometry("1280x850")
+root.geometry("2400x2000")
 
 try:
     root.iconbitmap("app_icon.ico")
@@ -93,7 +93,7 @@ fig, ax = plt.subplots(figsize=(7, 5))
 canvas = FigureCanvasTkAgg(fig, master=left_panel)
 canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
-right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=420, padx=10)
+right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=820, padx=50)
 right_panel.pack(side=tk.RIGHT, fill=tk.Y)
 right_panel.pack_propagate(0)
 
@@ -126,9 +126,9 @@ formula_block = tk.Label(
     right_panel,
     text=(
         "Formulas Used:\n"
-        "  r = t / sqrt(t² + (n − 2))\n"
-        "  t = r × sqrt(n − 2) / sqrt(1 − r²)\n"
-        "  df = n − 2"
+        "  r = t / sqrt(t² + (n-2))\n"
+        "  t = r*sqrt(n-2) / sqrt(1-r²)\n"
+        "  df = n-2"
     ),
     bg="#f0f6ff",
     justify="left",
@@ -153,9 +153,15 @@ legend = tk.Label(
     bg="#f0f6ff",
     justify="left",
     font=("Helvetica", 21),
-    wraplength=360,
+    wraplength=860,
     anchor="w"
 )
 legend.pack(pady=(0, 10), padx=5, fill=tk.BOTH)
 
 root.mainloop()
+
+
+# The size of the right panel is controlled by the `width` parameter in the `right_panel` Frame.
+# You can adjust the width of the right panel by modifying the `width` value below:
+
+#right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=420, padx=10)
