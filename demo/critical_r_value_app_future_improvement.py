@@ -4,6 +4,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 from scipy.stats import t
 import numpy as np
+from PIL import Image, ImageTk
 
 def calculate_r_critical(alpha, n):
     df = n - 2
@@ -27,11 +28,11 @@ def calculate_and_plot():
         ax.plot(n_vals, r_vals, label='r_critical vs n', color='green')
         ax.axhline(y=r_critical, color='red', linestyle='--', label=f'+r_critical = {r_critical:.3f}')
         ax.axhline(y=-r_critical, color='blue', linestyle='--', label=f'-r_critical = {-r_critical:.3f}')
-        ax.set_xlabel('Sample Size (n)', fontsize=24)
-        ax.set_ylabel('Critical r-value', fontsize=24)
-        ax.set_title('Critical r-value vs Sample Size', fontsize=28)
+        ax.set_xlabel('Sample Size (n)')
+        ax.set_ylabel('Critical r-value')
+        ax.set_title('Critical r-value vs Sample Size')
         ax.set_ylim(-1, 1)
-        ax.legend(fontsize=16)
+        ax.legend()
         canvas.draw()
 
         calc_summary.config(text=f"""n = {n}
@@ -50,20 +51,25 @@ def save_plot():
         fig.savefig(file_path)
         messagebox.showinfo("Saved", f"Plot saved to:\n{file_path}")
 
-# def exit_app():
-#     root.protocol("WM_DELETE_WINDOW", exit_app)# to handle window close event the line to use later
-#     # root.quit()  # Uncomment this line if you want to close the app when the window is closed
-#     # root.destroy()  # Uncomment this line if you want to destroy the app when the window is closed
-#   #  root.quit()
-#     root.destroy()
-
 def exit_app():
     root.destroy()
 
-    root.protocol("WM_DELETE_WINDOW", exit_app)
+def render_formula_image(filename="formulas.png"):
+    fig, ax = plt.subplots(figsize=(6, 2))
+    ax.axis('off')
+    formula = (
+        r"$ Formulas-used$" "\n"
+        r"$r = \frac{t}{\sqrt{t^2 + (n - 2)}}$" "\n"
+        r"$t = \frac{r \cdot \sqrt{n - 2}}{\sqrt{1 - r^2}}$" "\n"
+        r"$df = n - 2$"
+    )
+    ax.text(0.5, 0.5, formula, fontsize=20, ha='center', va='center', multialignment='center')
+    fig.tight_layout()
+    fig.savefig(filename, bbox_inches='tight')
+    plt.close(fig)
+    return filename
 
-
-
+# GUI setup
 root = tk.Tk()
 root.title("Critical r-value Calculator and Visualizer AJ")
 root.geometry("2400x1800")
@@ -71,26 +77,30 @@ root.geometry("2400x1800")
 try:
     root.iconbitmap("app_icon.ico")
 except Exception:
-    pass  # Ignore missing icon
+    pass
+
+root.protocol("WM_DELETE_WINDOW", exit_app)
 
 top_frame = tk.Frame(root, bg="#e6f0ff", padx=10, pady=5)
 top_frame.pack(fill=tk.X)
 
-tk.Label(top_frame, text="Significance Level (α):", bg="#e6f0ff", font=("Arial", 24)).pack(side=tk.LEFT)
-entry_alpha = tk.Entry(top_frame, width=6, font=("Arial", 24))
+font_large = ("Arial", 18)
+
+tk.Label(top_frame, text="Significance Level (α):", bg="#e6f0ff", font=font_large).pack(side=tk.LEFT)
+entry_alpha = tk.Entry(top_frame, width=6, font=font_large)
 entry_alpha.insert(0, "0.05")
 entry_alpha.pack(side=tk.LEFT, padx=(0, 15))
 
-tk.Label(top_frame, text="Sample Size (n):", bg="#e6f0ff", font=("Arial", 24)).pack(side=tk.LEFT)
-entry_n = tk.Entry(top_frame, width=6, font=("Arial", 24))
+tk.Label(top_frame, text="Sample Size (n):", bg="#e6f0ff", font=font_large).pack(side=tk.LEFT)
+entry_n = tk.Entry(top_frame, width=6, font=font_large)
 entry_n.insert(0, "14")
 entry_n.pack(side=tk.LEFT, padx=(0, 15))
 
-tk.Button(top_frame, text="Calculate & Plot", command=calculate_and_plot, bg="#007acc", fg="white", font=("Arial", 24, "bold")).pack(side=tk.LEFT, padx=5)
-tk.Button(top_frame, text="💾 Save Plot", command=save_plot, bg="#28a745", fg="white", font=("Arial", 24, "bold")).pack(side=tk.LEFT, padx=5)
-tk.Button(top_frame, text="❌ Exit", command=exit_app, bg="#cc0000", fg="white", font=("Arial", 24, "bold")).pack(side=tk.LEFT, padx=5)
+tk.Button(top_frame, text="Calculate & Plot", command=calculate_and_plot, bg="#007acc", fg="white", font=font_large).pack(side=tk.LEFT, padx=5)
+tk.Button(top_frame, text="💾 Save Plot", command=save_plot, bg="#28a745", fg="white", font=font_large).pack(side=tk.LEFT, padx=5)
+tk.Button(top_frame, text="Exit", command=exit_app, bg="#dc3545", fg="white", font=font_large).pack(side=tk.RIGHT, padx=5)
 
-result_label = tk.Label(root, text="Critical r-value (±): ", font=("Arial", 26, "bold"))
+result_label = tk.Label(root, text="Critical r-value (±): ", font=("Arial", 18, "bold"))
 result_label.pack(pady=5)
 
 main_frame = tk.Frame(root)
@@ -103,49 +113,28 @@ fig, ax = plt.subplots(figsize=(7, 5))
 canvas = FigureCanvasTkAgg(fig, master=left_panel)
 canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
-right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=820, padx=50)
+right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=350, padx=10)
 right_panel.pack(side=tk.RIGHT, fill=tk.Y)
 right_panel.pack_propagate(0)
 
-tk.Label(
-    right_panel,
-    text="🧮 Calculation Summary",
-    font=("Helvetica", 27, "bold"),
-    bg="#f0f6ff",
-    fg="#003366"
-).pack(pady=(5, 2))
-
-calc_summary = tk.Label(
-    right_panel,
-    text="",
-    bg="#f0f6ff",
-    justify="left",
-    font=("Courier", 22)
-)
+tk.Label(right_panel, text="🧮 Calculation Summary", font=("Helvetica", 16, "bold"), bg="#f0f6ff", fg="#003366").pack(pady=(5, 2))
+calc_summary = tk.Label(right_panel, text="", bg="#f0f6ff", justify="left", font=("Courier", 14))
 calc_summary.pack(pady=(0, 10), padx=5, anchor="w")
 
-tk.Label(
-    right_panel,
-    text="📘 About This App",
-    font=("Helvetica", 27, "bold"),
-    bg="#f0f6ff",
-    fg="#003366"
-).pack(pady=(5, 2))
+tk.Label(right_panel, text="📚 About This App", font=("Helvetica", 16, "bold"), bg="#f0f6ff", fg="#003366").pack(pady=(5, 2))
+
+# Render and load the formula image
+render_formula_image()
+formula_image = Image.open("formulas.png")
+formula_photo = ImageTk.PhotoImage(formula_image)
 
 formula_block = tk.Label(
     right_panel,
-    text=(
-        "Formulas Used:\n"
-        "  r = t / sqrt(t² + (n-2))\n"
-        "  t = r*sqrt(n-2) / sqrt(1-r²)\n"
-        "  df = n-2"
-    ),
-    bg="#f0f6ff",
-    justify="left",
-    font=("Courier", 20),
-    fg="#2c3e50"
+    image=formula_photo,
+    bg="#f0f6ff"
 )
-formula_block.pack(pady=(0, 8), padx=5, anchor="w")
+formula_block.image = formula_photo
+formula_block.pack(pady=(0, 8), padx=5, anchor="center")
 
 legend = tk.Label(
     right_panel,
@@ -162,16 +151,10 @@ legend = tk.Label(
     ),
     bg="#f0f6ff",
     justify="left",
-    font=("Helvetica", 21),
+    font=("Helvetica", 14),
     wraplength=860,
     anchor="w"
 )
 legend.pack(pady=(0, 10), padx=5, fill=tk.BOTH)
 
 root.mainloop()
-
-
-# The size of the right panel is controlled by the `width` parameter in the `right_panel` Frame.
-# You can adjust the width of the right panel by modifying the `width` value below:
-
-#right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=420, padx=10)

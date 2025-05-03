@@ -1,9 +1,9 @@
 git --version
 git add .
-git commit -m "'Forced exit of the script'"
+git commit -m "'Final commit before release'"
 git push origin main
 
 :: === Tagging for GitHub Actions Release Build ===
-git tag v2.9
-git push origin v2.9
+git tag v3.0
+git push origin v3.0
 pause
