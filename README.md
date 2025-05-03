@@ -29,7 +29,7 @@ This project showcases my proficiency in **Python 3**, **Tkinter**, **matplotlib
 ## 🔽 Download
 
 📦 Grab the latest stable release:
-➡️ **[Download v3.3 for Windows (.exe)](https://github.com/jentimanatol/CriticalRValueApp/releases/download/v3.3/critical_r_value_app.exe)**
+➡️ **[Download v3.4 for Windows (.exe)](https://github.com/jentimanatol/CriticalRValueApp/releases/download/v3.4/critical_r_value_app.exe)**
 
 📁 Need older versions or want to check the source code?
 🔍 **[Browse all releases](https://github.com/jentimanatol/CriticalRValueApp/releases)**
@@ -81,6 +81,9 @@ Whenever you're working with **Pearson correlation coefficients**, it’s critic
 ---
 
 ## 🖼️ App Preview
+![Screenshots](screenshots/screenshots.png)
+![Screenshots](screenshots/v1screenshots.png)
+
 
 ![App Screenshot](https://github.com/jentimanatol/CriticalRValueApp/blob/22b0aca92b839a9518525e35158d3d08e1b72f71/screenshots/screenshots.png)
 *A clear, interactive interface for exploring statistical thresholds.*
