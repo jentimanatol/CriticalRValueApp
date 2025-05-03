@@ -82,6 +82,7 @@ Whenever you're working with **Pearson correlation coefficients**, it’s critic
 
 ## 🖼️ App Preview
 ![Screenshots](screenshots/screenshots.png)
+![Screenshots](screenshots/onetiled_plot.png)
 ![Screenshots](screenshots/v1screenshots.png)
 
 
