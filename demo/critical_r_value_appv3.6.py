@@ -5,14 +5,14 @@ import matplotlib.pyplot as plt
 from scipy.stats import t
 import numpy as np
 
-def calculate_r_critical(alpha, n, tail_type="2-tailed"):
+def calculate_r_critical(alpha, n, tails="2-tailed"):
     df = n - 2
     if df <= 0:
         raise ValueError("Sample size must be at least 3.")
-    if tail_type == "1-tailed":
-        t_crit = t.ppf(1 - alpha, df)
-    else:
+    if tails == "2-tailed":
         t_crit = t.ppf(1 - alpha / 2, df)
+    else:  # 1-tailed
+        t_crit = t.ppf(1 - alpha, df)
     r_crit = t_crit / np.sqrt(t_crit**2 + df)
     return r_crit, t_crit, df
 
@@ -27,28 +27,20 @@ def calculate_and_plot():
         result_label.config(text=f"Critical r-value (±): {r_critical:.3f}")
 
         ax.clear()
-        # Plotting the full t-distribution
-        x_vals = np.linspace(-5, 5, 1000)
-        y_vals = t.pdf(x_vals, df)
-        ax.plot(x_vals, y_vals, color='black', label='t-distribution')
+        n_vals = np.arange(3, 101)
+        r_vals = [calculate_r_critical(alpha, i, tail_type)[0] for i in n_vals]
+        ax.plot(n_vals, r_vals, label='r_critical vs n', color='green')
 
-        if tail_type == "1-tailed":
-            x_fill = np.linspace(t_critical, 5, 500)
-            ax.fill_between(x_fill, t.pdf(x_fill, df), color='red', alpha=0.5, label=f'Critical region (α = {alpha})')
-            ax.axvline(t_critical, color='red', linestyle='--', label=f't_critical = {t_critical:.3f}')
+        if tail_type == "2-tailed":
+            ax.axhline(y=r_critical, color='red', linestyle='--', label=f'+r_critical = {r_critical:.3f}')
+            ax.axhline(y=-r_critical, color='blue', linestyle='--', label=f'-r_critical = {-r_critical:.3f}')
         else:
-            t_crit_pos = t_critical
-            t_crit_neg = -t_critical
-            x_fill_right = np.linspace(t_crit_pos, 5, 500)
-            x_fill_left = np.linspace(-5, t_crit_neg, 500)
-            ax.fill_between(x_fill_right, t.pdf(x_fill_right, df), color='red', alpha=0.5, label=f'Right critical region (α/2 = {alpha/2})')
-            ax.fill_between(x_fill_left, t.pdf(x_fill_left, df), color='blue', alpha=0.5, label=f'Left critical region (α/2 = {alpha/2})')
-            ax.axvline(t_crit_pos, color='red', linestyle='--', label=f'+t_critical = {t_crit_pos:.3f}')
-            ax.axvline(t_crit_neg, color='blue', linestyle='--', label=f'-t_critical = {t_crit_neg:.3f}')
+            ax.axhline(y=r_critical, color='purple', linestyle='--', label=f'r_critical = {r_critical:.3f}')
 
-        ax.set_title("t-Distribution with Critical Region", fontsize=28)
-        ax.set_xlabel('t-value', fontsize=24)
-        ax.set_ylabel('Probability Density', fontsize=24)
+        ax.set_xlabel('Sample Size (n)', fontsize=24)
+        ax.set_ylabel('Critical r-value', fontsize=24)
+        ax.set_title('Critical r-value vs Sample Size', fontsize=28)
+        ax.set_ylim(-1, 1)
         ax.legend(fontsize=16)
         canvas.draw()
 
@@ -56,7 +48,7 @@ def calculate_and_plot():
 df = {df}
 α = {alpha}
 t_critical = {t_critical:.4f}
-r_critical = ± {r_critical:.4f} ({tail_type})""")
+r_critical = ± {r_critical:.4f}""")
 
     except Exception as e:
         messagebox.showerror("Error", str(e))
@@ -70,11 +62,10 @@ def save_plot():
 
 def exit_app():
     root.destroy()
-    root.protocol("WM_DELETE_WINDOW", exit_app)
 
 root = tk.Tk()
 root.title("Critical r-value Calculator and Visualizer AJ")
-root.geometry("9400x9800")
+root.geometry("2400x1800")
 
 try:
     root.iconbitmap("app_icon.ico")
@@ -94,21 +85,12 @@ entry_n = tk.Entry(top_frame, width=6, font=("Arial", 24))
 entry_n.insert(0, "14")
 entry_n.pack(side=tk.LEFT, padx=(0, 15))
 
-
-
-tail_mode = tk.StringVar(value="2-tailed")
 tk.Label(top_frame, text="Test Type:", bg="#e6f0ff", font=("Arial", 24)).pack(side=tk.LEFT, padx=(15, 0))
-
-
-tail_option = tk.OptionMenu(top_frame, tail_mode, "1-tailed", "2-tailed")
-tail_option.config(font=("Arial", 24))
-
-# Configure dropdown menu font (this is the key part)
-tail_option["menu"].config(font=("Arial", 24))
-tail_option.pack(side=tk.LEFT, padx=(0, 15))
-
-
-
+tail_mode = tk.StringVar(value="2-tailed")
+tail_menu = tk.OptionMenu(top_frame, tail_mode, "1-tailed", "2-tailed")
+tail_menu.config(font=("Arial", 24), width=10)
+tail_menu["menu"].config(font=("Arial", 20))
+tail_menu.pack(side=tk.LEFT, padx=(0, 15))
 
 tk.Button(top_frame, text="Calculate & Plot", command=calculate_and_plot, bg="#007acc", fg="white", font=("Arial", 24, "bold")).pack(side=tk.LEFT, padx=5)
 tk.Button(top_frame, text="💾 Save Plot", command=save_plot, bg="#28a745", fg="white", font=("Arial", 24, "bold")).pack(side=tk.LEFT, padx=5)
@@ -178,7 +160,8 @@ legend = tk.Label(
         "based on significance level (α) and sample size (n).\n\n"
         "📌 Inputs:\n"
         "  α — Significance level (e.g., 0.01, 0.05)\n"
-        "  n — Sample size ≥ 3\n\n"
+        "  n — Sample size ≥ 3\n"
+        "  Test Type — 1-tailed or 2-tailed\n\n"
         "📐 Outputs:\n"
         "  df = n - 2\n"
         "  t_critical — from t-distribution\n"
