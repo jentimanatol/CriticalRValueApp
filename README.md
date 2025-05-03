@@ -13,7 +13,7 @@
 
 ## 🧾 About This Project
 
-This application was created as part of my personal portfolio to demonstrate my ability to design clean, functional, and mathematically-accurate software tools for data analysis and education.
+This application was created as part of my personal portfolio to demonstrate my ability to design clean, functional, and mathematically-accurate software tools for data analysis and education perfect for Statistics I MAT-181.
 
 **Critical r-value Calculator & Visualizer** is more than just a calculator — it's a learning assistant. Designed for both beginners and professionals in statistics, the app simplifies complex statistical formulas into an interactive, visual experience. It reflects my interests in:
 
@@ -85,7 +85,9 @@ Whenever you're working with **Pearson correlation coefficients**, it’s critic
 ![Screenshots](screenshots/v1screenshots.png)
 
 
-![App Screenshot](https://github.com/jentimanatol/CriticalRValueApp/blob/22b0aca92b839a9518525e35158d3d08e1b72f71/screenshots/screenshots.png)
+
+
+
 *A clear, interactive interface for exploring statistical thresholds.*
 
 ---
@@ -97,6 +99,8 @@ Degrees of Freedom (df): df = n - 2
 t-critical:               Two-tailed t-distribution at chosen α  
 r-critical formula:       r = t / √(t² + df)
 ```
+![Formula used](screenshots/formulas.png)
+
 
 All calculations follow standard statistical principles and are dynamically updated based on input.
 
