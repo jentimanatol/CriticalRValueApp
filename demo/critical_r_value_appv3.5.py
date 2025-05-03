@@ -5,17 +5,11 @@ import matplotlib.pyplot as plt
 from scipy.stats import t
 import numpy as np
 
-def calculate_r_critical(alpha, n, tail_type="2-tailed"):
+def calculate_r_critical(alpha, n):
     df = n - 2
     if df <= 0:
         raise ValueError("Sample size must be at least 3.")
-    if tail_type == "2-tailed":
-        adjusted_alpha = alpha / 2
-    elif tail_type == "1-tailed":
-        adjusted_alpha = alpha
-    else:
-        raise ValueError("Invalid tail type. Choose '1-tailed' or '2-tailed'.")
-    t_crit = t.ppf(1 - adjusted_alpha, df)
+    t_crit = t.ppf(1 - alpha / 2, df)
     r_crit = t_crit / np.sqrt(t_crit**2 + df)
     return r_crit, t_crit, df
 
@@ -23,14 +17,13 @@ def calculate_and_plot():
     try:
         alpha = float(entry_alpha.get())
         n = int(entry_n.get())
-        tail_type = tail_mode.get()
-        r_critical, t_critical, df = calculate_r_critical(alpha, n, tail_type)
+        r_critical, t_critical, df = calculate_r_critical(alpha, n)
 
         result_label.config(text=f"Critical r-value (±): {r_critical:.3f}")
 
         ax.clear()
         n_vals = np.arange(3, 101)
-        r_vals = [calculate_r_critical(alpha, i, tail_type)[0] for i in n_vals]
+        r_vals = [calculate_r_critical(alpha, i)[0] for i in n_vals]
         ax.plot(n_vals, r_vals, label='r_critical vs n', color='green')
         ax.axhline(y=r_critical, color='red', linestyle='--', label=f'+r_critical = {r_critical:.3f}')
         ax.axhline(y=-r_critical, color='blue', linestyle='--', label=f'-r_critical = {-r_critical:.3f}')
@@ -43,7 +36,7 @@ def calculate_and_plot():
 
         calc_summary.config(text=f"""n = {n}
 df = {df}
-α = {alpha} ({tail_type})
+α = {alpha}
 t_critical = {t_critical:.4f}
 r_critical = ± {r_critical:.4f}""")
 
@@ -57,14 +50,23 @@ def save_plot():
         fig.savefig(file_path)
         messagebox.showinfo("Saved", f"Plot saved to:\n{file_path}")
 
+# def exit_app():
+#     root.protocol("WM_DELETE_WINDOW", exit_app)# to handle window close event the line to use later
+#     # root.quit()  # Uncomment this line if you want to close the app when the window is closed
+#     # root.destroy()  # Uncomment this line if you want to destroy the app when the window is closed
+#   #  root.quit()
+#     root.destroy()
+
 def exit_app():
     root.destroy()
 
     root.protocol("WM_DELETE_WINDOW", exit_app)
 
+
+
 root = tk.Tk()
 root.title("Critical r-value Calculator and Visualizer AJ")
-root.geometry("6400x4800")
+root.geometry("2400x1800")
 
 try:
     root.iconbitmap("app_icon.ico")
@@ -83,36 +85,6 @@ tk.Label(top_frame, text="Sample Size (n):", bg="#e6f0ff", font=("Arial", 24)).p
 entry_n = tk.Entry(top_frame, width=6, font=("Arial", 24))
 entry_n.insert(0, "14")
 entry_n.pack(side=tk.LEFT, padx=(0, 15))
-
-
-
-# tail_mode = tk.StringVar(value="2-tailed")
-# tk.Label(top_frame, text="Test Type:", bg="#e6f0ff", font=("Arial", 24)).pack(side=tk.LEFT, padx=(15, 0))
-# tk.OptionMenu(top_frame, tail_mode, "1-tailed", "2-tailed").pack(side=tk.LEFT, padx=(0, 15))
-
-
-# tail_mode = tk.StringVar(value="2-tailed")
-# tk.Label(top_frame, text="Test Type:", bg="#e6f0ff", font=("Arial", 24)).pack(side=tk.LEFT, padx=(15, 0))
-# tail_menu = tk.OptionMenu(top_frame, tail_mode, "1-tailed", "2-tailed")
-# tail_menu.config(font=("Arial", 24), width=10)
-# tail_menu.pack(side=tk.LEFT, padx=(0, 15))
-
-
-tail_mode = tk.StringVar(value="2-tailed")
-tk.Label(top_frame, text="Test Type:", bg="#e6f0ff", font=("Arial", 24)).pack(side=tk.LEFT, padx=(15, 0))
-
-tail_menu = tk.OptionMenu(top_frame, tail_mode, "1-tailed", "2-tailed")
-tail_menu.config(font=("Arial", 24), width=10)
-
-# Configure dropdown menu font (this is the key part)
-tail_menu["menu"].config(font=("Arial", 24))
-
-tail_menu.pack(side=tk.LEFT, padx=(0, 15))
-
-
-
-
-
 
 tk.Button(top_frame, text="Calculate & Plot", command=calculate_and_plot, bg="#007acc", fg="white", font=("Arial", 24, "bold")).pack(side=tk.LEFT, padx=5)
 tk.Button(top_frame, text="💾 Save Plot", command=save_plot, bg="#28a745", fg="white", font=("Arial", 24, "bold")).pack(side=tk.LEFT, padx=5)
@@ -162,7 +134,7 @@ tk.Label(
 
 formula_block = tk.Label(
     right_panel,
-    text=( 
+    text=(
         "Formulas Used:\n"
         "  r = t / sqrt(t² + (n-2))\n"
         "  t = r*sqrt(n-2) / sqrt(1-r²)\n"
@@ -177,7 +149,7 @@ formula_block.pack(pady=(0, 8), padx=5, anchor="w")
 
 legend = tk.Label(
     right_panel,
-    text=( 
+    text=(
         "This tool visualizes the critical Pearson r-value\n"
         "based on significance level (α) and sample size (n).\n\n"
         "📌 Inputs:\n"
@@ -197,3 +169,9 @@ legend = tk.Label(
 legend.pack(pady=(0, 10), padx=5, fill=tk.BOTH)
 
 root.mainloop()
+
+
+# The size of the right panel is controlled by the `width` parameter in the `right_panel` Frame.
+# You can adjust the width of the right panel by modifying the `width` value below:
+
+#right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=420, padx=10)
