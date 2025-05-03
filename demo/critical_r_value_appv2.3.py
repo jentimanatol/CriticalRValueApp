@@ -92,31 +92,11 @@ right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=350, padx=10)
 right_panel.pack(side=tk.RIGHT, fill=tk.Y)
 right_panel.pack_propagate(0)
 
-# Enlarged font: Section headers and contents
-tk.Label(
-    right_panel,
-    text="🧮 Calculation Summary",
-    font=("Helvetica", 15, "bold"),
-    bg="#f0f6ff",
-    fg="#003366"
-).pack(pady=(5, 2))
-
-calc_summary = tk.Label(
-    right_panel,
-    text="",
-    bg="#f0f6ff",
-    justify="left",
-    font=("Courier", 13)
-)
+tk.Label(right_panel, text="🧮 Calculation Summary", font=("Helvetica", 13, "bold"), bg="#f0f6ff", fg="#003366").pack(pady=(5, 2))
+calc_summary = tk.Label(right_panel, text="", bg="#f0f6ff", justify="left", font=("Courier", 12))
 calc_summary.pack(pady=(0, 10), padx=5, anchor="w")
 
-tk.Label(
-    right_panel,
-    text="📘 About This App",
-    font=("Helvetica", 15, "bold"),
-    bg="#f0f6ff",
-    fg="#003366"
-).pack(pady=(5, 2))
+tk.Label(right_panel, text="📘 About This App", font=("Helvetica", 13, "bold"), bg="#f0f6ff", fg="#003366").pack(pady=(5, 2))
 
 formula_block = tk.Label(
     right_panel,
@@ -128,14 +108,14 @@ formula_block = tk.Label(
     ),
     bg="#f0f6ff",
     justify="left",
-    font=("Courier", 12),
+    font=("Courier", 11),
     fg="#2c3e50"
 )
 formula_block.pack(pady=(0, 8), padx=5, anchor="w")
 
 legend = tk.Label(
     right_panel,
-    text=(
+    text=( 
         "This tool visualizes the critical Pearson r-value\n"
         "based on significance level (α) and sample size (n).\n\n"
         "📌 Inputs:\n"
@@ -148,7 +128,7 @@ legend = tk.Label(
     ),
     bg="#f0f6ff",
     justify="left",
-    font=("Helvetica", 12),
+    font=("Helvetica", 11),
     wraplength=300,
     anchor="w"
 )
