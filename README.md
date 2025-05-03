@@ -29,7 +29,7 @@ This project showcases my proficiency in **Python 3**, **Tkinter**, **matplotlib
 ## 🔽 Download
 
 📦 Grab the latest stable release:
-➡️ **[Download v3.0 for Windows (.exe)](https://github.com/jentimanatol/CriticalRValueApp/releases/download/v3.0/critical_r_value_app.exe)**
+➡️ **[Download v3.1 for Windows (.exe)](https://github.com/jentimanatol/CriticalRValueApp/releases/download/v3.1/critical_r_value_app.exe)**
 
 📁 Need older versions or want to check the source code?
 🔍 **[Browse all releases](https://github.com/jentimanatol/CriticalRValueApp/releases)**

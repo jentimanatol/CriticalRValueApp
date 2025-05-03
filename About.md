@@ -22,7 +22,7 @@ It helps you easily compute and visualize the **critical r-value** — the corre
 ## 🔽 Download
 
 📦 Grab the latest version:
-➡️ **[Download Critical r-value Calculator AJ v3.0 (.exe)](https://github.com/jentimanatol/CriticalRValueApp/releases/download/v3.0/critical_r_value_app.exe)**
+➡️ **[Download Critical r-value Calculator AJ v3.1 (.exe)](https://github.com/jentimanatol/CriticalRValueApp/releases/download/v3.1/critical_r_value_app.exe)**
 
 📁 Want the source or an earlier release?
 🔍 **[Browse all versions](https://github.com/jentimanatol/CriticalRValueApp/releases)**
