@@ -51,12 +51,15 @@ def save_plot():
         messagebox.showinfo("Saved", f"Plot saved to:\n{file_path}")
 
 def exit_app():
+    root.protocol("WM_DELETE_WINDOW", exit_app)# to handle window close event the line to use later
+    # root.quit()  # Uncomment this line if you want to close the app when the window is closed
+    # root.destroy()  # Uncomment this line if you want to destroy the app when the window is closed
   #  root.quit()
     root.destroy()
 
 root = tk.Tk()
 root.title("Critical r-value Calculator and Visualizer AJ")
-root.geometry("2400x2000")
+root.geometry("2400x1800")
 
 try:
     root.iconbitmap("app_icon.ico")
