@@ -51,7 +51,8 @@ def save_plot():
         messagebox.showinfo("Saved", f"Plot saved to:\n{file_path}")
 
 def exit_app():
-    root.quit()
+  #  root.quit()
+    root.destroy()
 
 root = tk.Tk()
 root.title("Critical r-value Calculator and Visualizer AJ")

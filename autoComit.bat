@@ -1,9 +1,9 @@
 git --version
 git add .
-git commit -m "Add exit button to the main form"
+git commit -m "fixed error root.destroy"
 git push origin main
 
 :: === Tagging for GitHub Actions Release Build ===
-git tag v2.6.3
-git push origin v2.6.3
+git tag v2.6.4
+git push origin v2.6.4
 pause
