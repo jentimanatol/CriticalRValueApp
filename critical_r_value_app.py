@@ -27,11 +27,11 @@ def calculate_and_plot():
         ax.plot(n_vals, r_vals, label='r_critical vs n', color='green')
         ax.axhline(y=r_critical, color='red', linestyle='--', label=f'+r_critical = {r_critical:.3f}')
         ax.axhline(y=-r_critical, color='blue', linestyle='--', label=f'-r_critical = {-r_critical:.3f}')
-        ax.set_xlabel('Sample Size (n)', fontsize=12)
-        ax.set_ylabel('Critical r-value', fontsize=12)
-        ax.set_title('Critical r-value vs Sample Size', fontsize=14)
+        ax.set_xlabel('Sample Size (n)', fontsize=16)
+        ax.set_ylabel('Critical r-value', fontsize=16)
+        ax.set_title('Critical r-value vs Sample Size', fontsize=18)
         ax.set_ylim(-1, 1)
-        ax.legend()
+        ax.legend(fontsize=12)
         canvas.draw()
 
         calc_summary.config(text=f"""n = {n}
@@ -50,9 +50,12 @@ def save_plot():
         fig.savefig(file_path)
         messagebox.showinfo("Saved", f"Plot saved to:\n{file_path}")
 
+def exit_app():
+    root.quit()
+
 root = tk.Tk()
 root.title("Critical r-value Calculator and Visualizer AJ")
-root.geometry("1280x750")
+root.geometry("1280x800")
 
 try:
     root.iconbitmap("app_icon.ico")
@@ -62,20 +65,21 @@ except Exception:
 top_frame = tk.Frame(root, bg="#e6f0ff", padx=10, pady=5)
 top_frame.pack(fill=tk.X)
 
-tk.Label(top_frame, text="Significance Level (α):", bg="#e6f0ff", font=("Arial", 12)).pack(side=tk.LEFT)
-entry_alpha = tk.Entry(top_frame, width=6, font=("Arial", 12))
+tk.Label(top_frame, text="Significance Level (α):", bg="#e6f0ff", font=("Arial", 16)).pack(side=tk.LEFT)
+entry_alpha = tk.Entry(top_frame, width=6, font=("Arial", 16))
 entry_alpha.insert(0, "0.05")
 entry_alpha.pack(side=tk.LEFT, padx=(0, 15))
 
-tk.Label(top_frame, text="Sample Size (n):", bg="#e6f0ff", font=("Arial", 12)).pack(side=tk.LEFT)
-entry_n = tk.Entry(top_frame, width=6, font=("Arial", 12))
+tk.Label(top_frame, text="Sample Size (n):", bg="#e6f0ff", font=("Arial", 16)).pack(side=tk.LEFT)
+entry_n = tk.Entry(top_frame, width=6, font=("Arial", 16))
 entry_n.insert(0, "14")
 entry_n.pack(side=tk.LEFT, padx=(0, 15))
 
-tk.Button(top_frame, text="Calculate & Plot", command=calculate_and_plot, bg="#007acc", fg="white", font=("Arial", 12, "bold")).pack(side=tk.LEFT, padx=5)
-tk.Button(top_frame, text="💾 Save Plot", command=save_plot, bg="#28a745", fg="white", font=("Arial", 12, "bold")).pack(side=tk.LEFT, padx=5)
+tk.Button(top_frame, text="Calculate & Plot", command=calculate_and_plot, bg="#007acc", fg="white", font=("Arial", 16, "bold")).pack(side=tk.LEFT, padx=5)
+tk.Button(top_frame, text="💾 Save Plot", command=save_plot, bg="#28a745", fg="white", font=("Arial", 16, "bold")).pack(side=tk.LEFT, padx=5)
+tk.Button(top_frame, text="❌ Exit", command=exit_app, bg="#cc0000", fg="white", font=("Arial", 16, "bold")).pack(side=tk.LEFT, padx=5)
 
-result_label = tk.Label(root, text="Critical r-value (±): ", font=("Arial", 14, "bold"))
+result_label = tk.Label(root, text="Critical r-value (±): ", font=("Arial", 18, "bold"))
 result_label.pack(pady=5)
 
 main_frame = tk.Frame(root)
@@ -88,15 +92,14 @@ fig, ax = plt.subplots(figsize=(7, 5))
 canvas = FigureCanvasTkAgg(fig, master=left_panel)
 canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
 
-right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=350, padx=10)
+right_panel = tk.Frame(main_frame, bg="#f0f6ff", width=370, padx=10)
 right_panel.pack(side=tk.RIGHT, fill=tk.Y)
 right_panel.pack_propagate(0)
 
-# Enlarged font: Section headers and contents
 tk.Label(
     right_panel,
     text="🧮 Calculation Summary",
-    font=("Helvetica", 15, "bold"),
+    font=("Helvetica", 18, "bold"),
     bg="#f0f6ff",
     fg="#003366"
 ).pack(pady=(5, 2))
@@ -106,14 +109,14 @@ calc_summary = tk.Label(
     text="",
     bg="#f0f6ff",
     justify="left",
-    font=("Courier", 13)
+    font=("Courier", 15)
 )
 calc_summary.pack(pady=(0, 10), padx=5, anchor="w")
 
 tk.Label(
     right_panel,
     text="📘 About This App",
-    font=("Helvetica", 15, "bold"),
+    font=("Helvetica", 18, "bold"),
     bg="#f0f6ff",
     fg="#003366"
 ).pack(pady=(5, 2))
@@ -128,7 +131,7 @@ formula_block = tk.Label(
     ),
     bg="#f0f6ff",
     justify="left",
-    font=("Courier", 12),
+    font=("Courier", 14),
     fg="#2c3e50"
 )
 formula_block.pack(pady=(0, 8), padx=5, anchor="w")
@@ -148,8 +151,8 @@ legend = tk.Label(
     ),
     bg="#f0f6ff",
     justify="left",
-    font=("Helvetica", 12),
-    wraplength=300,
+    font=("Helvetica", 14),
+    wraplength=320,
     anchor="w"
 )
 legend.pack(pady=(0, 10), padx=5, fill=tk.BOTH)
