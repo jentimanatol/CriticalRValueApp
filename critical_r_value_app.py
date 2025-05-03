@@ -74,7 +74,7 @@ def exit_app():
 
 root = tk.Tk()
 root.title("Critical r-value Calculator and Visualizer AJ")
-root.geometry("9400x9800")
+root.geometry("2400x1800")
 
 try:
     root.iconbitmap("app_icon.ico")

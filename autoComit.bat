@@ -1,9 +1,9 @@
 git --version
 git add .
-git commit -m "'2 tiled plot update'"
+git commit -m "'Window size'"
 git push origin main
 
 :: === Tagging for GitHub Actions Release Build ===
-git tag v3.3
-git push origin v3.3
+git tag v3.4
+git push origin v3.4
 pause
