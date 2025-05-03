@@ -25,7 +25,7 @@
 ### 📦 Download the Latest Version
 
 
-🔽 **[Critical r-value Calculator and Visualizer AJ v2.0 (.exe)](https://github.com/jentimanatol/CriticalRValueApp/releases/download/v2.0/critical_r_value_app.exe)
+🔽 **[Critical r-value Calculator and Visualizer AJ v2.9 (.exe)](https://github.com/jentimanatol/CriticalRValueApp/releases/download/v2.9/critical_r_value_app.exe)
 **
 
 📌 Or check for newer versions and souce code:  
@@ -85,14 +85,9 @@ When working with **Pearson correlation**, it's essential to compare your calcul
 
 ## 🔍 Behind the Scenes – Formula Reference
 
-```text
-Degrees of Freedom: df = n - 2
+```$Degrees of Freedom: df = n - 2
 t-critical:        from two-tailed t-distribution at α
-r-critical:        r = t / √(t² + df)
-
-
-
-```
+r-critical:        r = t / √(t² + df)$```
 
 
 
