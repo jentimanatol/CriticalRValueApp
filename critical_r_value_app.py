@@ -4,6 +4,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 from scipy.stats import t
 import numpy as np
+import matplotlib
 
 def calculate_r_critical(alpha, n, tail_type="2-tailed"):
     df = n - 2
@@ -192,4 +193,11 @@ legend = tk.Label(
 )
 legend.pack(pady=(0, 10), padx=5, fill=tk.BOTH)
 
+#root.mainloop()
+
+
+# Ensure full shutdown when window is closed
+root.protocol("WM_DELETE_WINDOW", exit_app)
+
+# Run main loop
 root.mainloop()
