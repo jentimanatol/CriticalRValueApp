@@ -70,15 +70,12 @@ def save_plot():
         messagebox.showinfo("Saved", f"Plot saved to:\n{file_path}")
 
 def exit_app():
-    plt.close('all')  # Close all matplotlib figures
-    root.destroy()    # Destroy the root window
+    root.destroy()
+    root.protocol("WM_DELETE_WINDOW", exit_app)
 
 root = tk.Tk()
 root.title("Critical r-value Calculator and Visualizer AJ")
 root.geometry("2400x1800")
-
-# Set up the protocol handler BEFORE calling mainloop
-root.protocol("WM_DELETE_WINDOW", exit_app)
 
 try:
     root.iconbitmap("app_icon.ico")
@@ -98,8 +95,11 @@ entry_n = tk.Entry(top_frame, width=6, font=("Arial", 24))
 entry_n.insert(0, "14")
 entry_n.pack(side=tk.LEFT, padx=(0, 15))
 
+
+
 tail_mode = tk.StringVar(value="2-tailed")
 tk.Label(top_frame, text="Test Type:", bg="#e6f0ff", font=("Arial", 24)).pack(side=tk.LEFT, padx=(15, 0))
+
 
 tail_option = tk.OptionMenu(top_frame, tail_mode, "1-tailed", "2-tailed")
 tail_option.config(font=("Arial", 24))
@@ -107,6 +107,9 @@ tail_option.config(font=("Arial", 24))
 # Configure dropdown menu font (this is the key part)
 tail_option["menu"].config(font=("Arial", 24))
 tail_option.pack(side=tk.LEFT, padx=(0, 15))
+
+
+
 
 tk.Button(top_frame, text="Calculate & Plot", command=calculate_and_plot, bg="#007acc", fg="white", font=("Arial", 24, "bold")).pack(side=tk.LEFT, padx=5)
 tk.Button(top_frame, text="💾 Save Plot", command=save_plot, bg="#28a745", fg="white", font=("Arial", 24, "bold")).pack(side=tk.LEFT, padx=5)
@@ -190,5 +193,11 @@ legend = tk.Label(
 )
 legend.pack(pady=(0, 10), padx=5, fill=tk.BOTH)
 
-# Only one mainloop call at the end
+#root.mainloop()
+
+
+# Ensure full shutdown when window is closed
+root.protocol("WM_DELETE_WINDOW", exit_app)
+
+# Run main loop
 root.mainloop()
